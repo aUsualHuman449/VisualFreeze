@@ -5,15 +5,15 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Main frame
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 300, 0, 200)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.Size = UDim2.new(0, 300, 0, 220)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -110)
 mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 mainFrame.BorderSizePixel = 0
 mainFrame.Draggable = true
 mainFrame.Active = true
 mainFrame.Parent = screenGui
 
--- Title label
+-- Title
 local title = Instance.new("TextLabel")
 title.Text = "Human's Scam Trade"
 title.Size = UDim2.new(1, 0, 0, 30)
@@ -24,7 +24,7 @@ title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
 title.Parent = mainFrame
 
--- TikTok label
+-- TikTok Label
 local tiktokLabel = Instance.new("TextLabel")
 tiktokLabel.Text = "tiktok: best.roblox.scriptsz"
 tiktokLabel.Size = UDim2.new(1, 0, 0, 25)
@@ -35,66 +35,65 @@ tiktokLabel.BackgroundTransparency = 1
 tiktokLabel.Font = Enum.Font.SourceSans
 tiktokLabel.Parent = mainFrame
 
--- Helper to create rounded boxes and buttons
-local function createBox(yPos)
+-- Function to create a toggle switch
+local function createToggle(yPos, labelText)
 	local box = Instance.new("Frame")
 	box.Size = UDim2.new(1, -20, 0, 40)
 	box.Position = UDim2.new(0, 10, 0, yPos)
 	box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 	box.BorderColor3 = Color3.new(0, 0, 0)
+	box.BorderSizePixel = 1
 	box.Parent = mainFrame
-	return box
-end
 
-local function createLabel(text, parent)
 	local label = Instance.new("TextLabel")
-	label.Text = text
+	label.Text = labelText
 	label.Size = UDim2.new(0.6, 0, 1, 0)
 	label.Position = UDim2.new(0, 10, 0, 0)
 	label.TextSize = 12
-	label.BackgroundTransparency = 1
 	label.TextColor3 = Color3.new(1, 1, 1)
+	label.BackgroundTransparency = 1
 	label.Font = Enum.Font.SourceSans
 	label.TextXAlignment = Enum.TextXAlignment.Left
-	label.Parent = parent
-end
+	label.Parent = box
 
-local function createCircleButton(parent)
-	local btn = Instance.new("TextButton")
-	btn.Size = UDim2.new(0, 30, 0, 30)
-	btn.Position = UDim2.new(1, -40, 0.5, -15)
-	btn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-	btn.Text = ""
-	btn.BorderSizePixel = 0
-	btn.AutoButtonColor = false
-	btn.Parent = parent
+	local switchBox = Instance.new("Frame")
+	switchBox.Size = UDim2.new(0, 50, 0, 30)
+	switchBox.Position = UDim2.new(1, -60, 0.5, -15)
+	switchBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+	switchBox.BorderColor3 = Color3.new(0, 0, 0)
+	switchBox.Parent = box
 
-	local uicorner = Instance.new("UICorner")
-	uicorner.CornerRadius = UDim.new(1, 0)
-	uicorner.Parent = btn
+	local corner1 = Instance.new("UICorner")
+	corner1.CornerRadius = UDim.new(1, 0)
+	corner1.Parent = switchBox
 
-	-- Toggle logic
-	btn.MouseButton1Click:Connect(function()
-		local isRed = btn.BackgroundColor3 == Color3.fromRGB(200, 0, 0)
-		if isRed then
-			btn:TweenPosition(UDim2.new(1, -10 - 30, 0.5, -15), "Out", "Sine", 0.3, true)
-			btn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+	local toggleBtn = Instance.new("TextButton")
+	toggleBtn.Size = UDim2.new(0, 28, 0, 28)
+	toggleBtn.Position = UDim2.new(0, 1, 0, 1)
+	toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+	toggleBtn.BorderSizePixel = 0
+	toggleBtn.Text = ""
+	toggleBtn.AutoButtonColor = false
+	toggleBtn.Parent = switchBox
+
+	local corner2 = Instance.new("UICorner")
+	corner2.CornerRadius = UDim.new(1, 0)
+	corner2.Parent = toggleBtn
+
+	local toggled = false
+	toggleBtn.MouseButton1Click:Connect(function()
+		if toggled then
+			toggleBtn:TweenPosition(UDim2.new(0, 1, 0, 1), "Out", "Sine", 0.2, true)
+			toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 		else
-			btn:TweenPosition(UDim2.new(1, -40, 0.5, -15), "Out", "Sine", 0.3, true)
-			btn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+			toggleBtn:TweenPosition(UDim2.new(0, 21, 0, 1), "Out", "Sine", 0.2, true)
+			toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
 		end
+		toggled = not toggled
 	end)
 end
 
--- Creating the 3 buttons and labels
-local box1 = createBox(60)
-createLabel("freeze trade", box1)
-createCircleButton(box1)
-
-local box2 = createBox(105)
-createLabel("force accept", box2)
-createCircleButton(box2)
-
-local box3 = createBox(150)
-createLabel("add all items", box3)
-createCircleButton(box3)
+-- Create the toggle rows
+createToggle(65, "freeze trade")
+createToggle(115, "force accept")
+createToggle(165, "add all items")
