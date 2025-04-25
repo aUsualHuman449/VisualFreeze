@@ -1,79 +1,100 @@
--- LocalScript in StarterGui
-
-local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "ScamTradeGUI"
-
--- Function to make rounded corners
-local function applyUICorner(instance, radius)
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, radius)
-	corner.Parent = instance
-end
+-- Create the main GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ScamTradeGUI"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Main frame
-local mainFrame = Instance.new("Frame", gui)
-mainFrame.Size = UDim2.new(0, 300, 0, 220)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -110)
-mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 mainFrame.BorderSizePixel = 0
-applyUICorner(mainFrame, 12)
+mainFrame.Draggable = true
+mainFrame.Active = true
+mainFrame.Parent = screenGui
 
 -- Title label
-local title = Instance.new("TextLabel", mainFrame)
+local title = Instance.new("TextLabel")
 title.Text = "Human's Scam Trade"
 title.Size = UDim2.new(1, 0, 0, 30)
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.TextSize = 20
+title.TextColor3 = Color3.new(1, 1, 1)
 title.BackgroundTransparency = 1
 title.Font = Enum.Font.SourceSansBold
-title.TextSize = 16
+title.Parent = mainFrame
 
--- Button info
-local buttonData = {
-	{label = "trade freeze", position = UDim2.new(0, 10, 0, 40)},
-	{label = "auto accept", position = UDim2.new(0, 10, 0, 90)},
-	{label = "add all items", position = UDim2.new(0, 10, 0, 140)},
-}
+-- TikTok label
+local tiktokLabel = Instance.new("TextLabel")
+tiktokLabel.Text = "tiktok: best.roblox.scriptsz"
+tiktokLabel.Size = UDim2.new(1, 0, 0, 25)
+tiktokLabel.Position = UDim2.new(0, 0, 0, 30)
+tiktokLabel.TextSize = 16
+tiktokLabel.TextColor3 = Color3.new(1, 1, 1)
+tiktokLabel.BackgroundTransparency = 1
+tiktokLabel.Font = Enum.Font.SourceSans
+tiktokLabel.Parent = mainFrame
 
-for i, data in ipairs(buttonData) do
-	-- Container
-	local container = Instance.new("Frame", mainFrame)
-	container.Size = UDim2.new(1, -20, 0, 40)
-	container.Position = data.position
-	container.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-	container.BorderSizePixel = 0
-	container.Name = data.label
-	applyUICorner(container, 8)
+-- Helper to create rounded boxes and buttons
+local function createBox(yPos)
+	local box = Instance.new("Frame")
+	box.Size = UDim2.new(1, -20, 0, 40)
+	box.Position = UDim2.new(0, 10, 0, yPos)
+	box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+	box.BorderColor3 = Color3.new(0, 0, 0)
+	box.Parent = mainFrame
+	return box
+end
 
-	-- Label
-	local label = Instance.new("TextLabel", container)
-	label.Text = data.label
+local function createLabel(text, parent)
+	local label = Instance.new("TextLabel")
+	label.Text = text
 	label.Size = UDim2.new(0.6, 0, 1, 0)
-	label.BackgroundTransparency = 1
-	label.TextColor3 = Color3.fromRGB(255, 255, 255)
-	label.Font = Enum.Font.SourceSans
-	label.TextSize = 12
-	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.Position = UDim2.new(0, 10, 0, 0)
+	label.TextSize = 12
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.Font = Enum.Font.SourceSans
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.Parent = parent
+end
 
-	-- Button
-	local button = Instance.new("TextButton", container)
-	button.Size = UDim2.new(0.3, 0, 0.8, 0)
-	button.Position = UDim2.new(0.65, 0, 0.1, 0)
-	button.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-	button.Text = ""
-	button.Name = "ToggleButton"
-	applyUICorner(button, 8)
+local function createCircleButton(parent)
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(0, 30, 0, 30)
+	btn.Position = UDim2.new(1, -40, 0.5, -15)
+	btn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+	btn.Text = ""
+	btn.BorderSizePixel = 0
+	btn.AutoButtonColor = false
+	btn.Parent = parent
 
-	local toggled = false
-	button.MouseButton1Click:Connect(function()
-		toggled = not toggled
-		if toggled then
-			button:TweenPosition(UDim2.new(0.75, 0, 0.1, 0), "Out", "Quad", 0.2, true)
-			button.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+	local uicorner = Instance.new("UICorner")
+	uicorner.CornerRadius = UDim.new(1, 0)
+	uicorner.Parent = btn
+
+	-- Toggle logic
+	btn.MouseButton1Click:Connect(function()
+		local isRed = btn.BackgroundColor3 == Color3.fromRGB(200, 0, 0)
+		if isRed then
+			btn:TweenPosition(UDim2.new(1, -10 - 30, 0.5, -15), "Out", "Sine", 0.3, true)
+			btn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
 		else
-			button:TweenPosition(UDim2.new(0.65, 0, 0.1, 0), "Out", "Quad", 0.2, true)
-			button.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+			btn:TweenPosition(UDim2.new(1, -40, 0.5, -15), "Out", "Sine", 0.3, true)
+			btn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 		end
 	end)
 end
+
+-- Creating the 3 buttons and labels
+local box1 = createBox(60)
+createLabel("freeze trade", box1)
+createCircleButton(box1)
+
+local box2 = createBox(105)
+createLabel("force accept", box2)
+createCircleButton(box2)
+
+local box3 = createBox(150)
+createLabel("add all items", box3)
+createCircleButton(box3)
