@@ -1,96 +1,106 @@
--- Get player
+-- Get the player
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Helper functions
+-- Helper function to create TextLabel
 local function createTextLabel(parent, text, size, pos, textSize, font, alignment)
-	local label = Instance.new("TextLabel")
-	label.Text = text
-	label.Size = size
-	label.Position = pos
-	label.TextSize = textSize
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundTransparency = 1
-	label.Font = font
-	label.TextXAlignment = alignment or Enum.TextXAlignment.Center
-	label.Parent = parent
-	return label
+    local label = Instance.new("TextLabel")
+    label.Text = text
+    label.Size = size
+    label.Position = pos
+    label.TextSize = textSize
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.BackgroundTransparency = 1
+    label.Font = font
+    label.TextXAlignment = alignment or Enum.TextXAlignment.Center
+    label.Parent = parent
+    return label
 end
 
--- Main GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "ScamTradeGUI"
-screenGui.Parent = playerGui
-screenGui.ZIndex = 100  -- Set a high ZIndex to ensure it overlaps other GUIs
+-- Main GUI setup
+local function createGUI()
+    -- Create the ScreenGui
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "ScamTradeGUI"
+    screenGui.Parent = playerGui
+    screenGui.ZIndex = 100  -- Ensure it overlaps other GUIs
 
--- Main Frame (tighter size)
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 250, 0, 180)  -- Tighter width and height
-mainFrame.Position = UDim2.new(0.5, -125, 0.5, -90)  -- Centered with less padding
-mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-mainFrame.BorderSizePixel = 0
-mainFrame.Draggable = true
-mainFrame.Active = true
-mainFrame.Parent = screenGui
-mainFrame.ZIndex = 101000  -- Set a high ZIndex to overlap other elements
+    -- Create the main frame
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Size = UDim2.new(0, 250, 0, 180)  -- Adjust the width and height
+    mainFrame.Position = UDim2.new(0.5, -125, 0.5, -90)  -- Centered on screen
+    mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Draggable = true
+    mainFrame.Active = true
+    mainFrame.Parent = screenGui
+    mainFrame.ZIndex = 101  -- Higher ZIndex to ensure it overlaps other elements
 
--- Add rounded corners to the main frame
-local corner1 = Instance.new("UICorner", mainFrame)
-corner1.CornerRadius = UDim.new(0, 20)  -- Adjust corner radius as needed
+    -- Add rounded corners to the main frame
+    local corner1 = Instance.new("UICorner", mainFrame)
+    corner1.CornerRadius = UDim.new(0, 20)  -- Adjust corner radius as needed
 
--- Title & TikTok (tighter spacing)
-createTextLabel(mainFrame, "Human's Scam Trade", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 0), 18, Enum.Font.SourceSansBold)  -- Smaller text
-createTextLabel(mainFrame, "tiktok: best.roblox.scriptsz", UDim2.new(1, 0, 0, 20), UDim2.new(0, 0, 0, 25), 14, Enum.Font.SourceSans)  -- Smaller text
+    -- Title & TikTok text
+    createTextLabel(mainFrame, "Human's Scam Trade", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 0), 18, Enum.Font.SourceSansBold)
+    createTextLabel(mainFrame, "tiktok: best.roblox.scriptsz", UDim2.new(1, 0, 0, 20), UDim2.new(0, 0, 0, 25), 14, Enum.Font.SourceSans)
 
--- Toggle creator (adjusted position and size for compactness)
-local function createToggle(yPos, labelText)
-	local box = Instance.new("Frame")
-	box.Size = UDim2.new(1, -20, 0, 30)  -- Smaller height for the toggle box
-	box.Position = UDim2.new(0, 10, 0, yPos)
-	box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-	box.Parent = mainFrame
-	box.ZIndex = 102  -- Set a high ZIndex for the toggle box
+    -- Create toggles with adjusted positions
+    local function createToggle(yPos, labelText)
+        local box = Instance.new("Frame")
+        box.Size = UDim2.new(1, -20, 0, 30)  -- Adjusted height for toggle box
+        box.Position = UDim2.new(0, 10, 0, yPos)
+        box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        box.Parent = mainFrame
+        box.ZIndex = 102  -- Ensure toggles are on top of the frame
 
-	-- Add rounded corners to the box
-	local corner2 = Instance.new("UICorner", box)
-	corner2.CornerRadius = UDim.new(0, 10)  -- Adjust corner radius as needed
+        -- Add rounded corners to toggle box
+        local corner2 = Instance.new("UICorner", box)
+        corner2.CornerRadius = UDim.new(0, 10)
 
-	createTextLabel(box, labelText, UDim2.new(0.6, 0, 1, 0), UDim2.new(0, 10, 0, 0), 12, Enum.Font.SourceSans, Enum.TextXAlignment.Left)  -- Smaller label text
+        -- Create the toggle label
+        createTextLabel(box, labelText, UDim2.new(0.6, 0, 1, 0), UDim2.new(0, 10, 0, 0), 12, Enum.Font.SourceSans, Enum.TextXAlignment.Left)
 
-	local switchBox = Instance.new("Frame")
-	switchBox.Size = UDim2.new(0, 40, 0, 25)  -- Smaller switch box
-	switchBox.Position = UDim2.new(1, -50, 0.5, -12)  -- Adjusted position
-	switchBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-	switchBox.Parent = box
-	switchBox.ZIndex = 103  -- Set a high ZIndex for the switch box
+        -- Create switch box for toggle button
+        local switchBox = Instance.new("Frame")
+        switchBox.Size = UDim2.new(0, 40, 0, 25)
+        switchBox.Position = UDim2.new(1, -50, 0.5, -12)
+        switchBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+        switchBox.Parent = box
+        switchBox.ZIndex = 103  -- Ensure it's above the toggle box
 
-	-- Add rounded corners to the switch box
-	local corner3 = Instance.new("UICorner", switchBox)
-	corner3.CornerRadius = UDim.new(0, 12)  -- Adjust corner radius as needed
+        -- Add rounded corners to switch box
+        local corner3 = Instance.new("UICorner", switchBox)
+        corner3.CornerRadius = UDim.new(0, 12)
 
-	local toggleBtn = Instance.new("TextButton")
-	toggleBtn.Size = UDim2.new(0, 24, 0, 24)  -- Smaller button
-	toggleBtn.Position = UDim2.new(0, 1, 0, 1)
-	toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-	toggleBtn.BorderSizePixel = 0
-	toggleBtn.Text = ""
-	toggleBtn.AutoButtonColor = false
-	toggleBtn.Parent = switchBox
-	toggleBtn.ZIndex = 104  -- Set a high ZIndex for the toggle button
+        -- Create the toggle button
+        local toggleBtn = Instance.new("TextButton")
+        toggleBtn.Size = UDim2.new(0, 24, 0, 24)
+        toggleBtn.Position = UDim2.new(0, 1, 0, 1)
+        toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        toggleBtn.BorderSizePixel = 0
+        toggleBtn.Text = ""
+        toggleBtn.AutoButtonColor = false
+        toggleBtn.Parent = switchBox
+        toggleBtn.ZIndex = 104  -- Ensure it's on top of the switch box
 
-	-- Add rounded corners to the toggle button
-	local corner4 = Instance.new("UICorner", toggleBtn)
-	corner4.CornerRadius = UDim.new(1, 0)
+        -- Add rounded corners to toggle button
+        local corner4 = Instance.new("UICorner", toggleBtn)
+        corner4.CornerRadius = UDim.new(1, 0)
 
-	local toggled = false
-	toggleBtn.MouseButton1Click:Connect(function()
-		toggled = not toggled
-		toggleBtn:TweenPosition(UDim2.new(0, toggled and 16 or 1, 0, 1), "Out", "Sine", 0.2, true)  -- Move less far
-		toggleBtn.BackgroundColor3 = toggled and Color3.fromRGB(0, 200, 0) or Color3.fromRGB(200, 0, 0)
-	end)
+        -- Toggle functionality
+        local toggled = false
+        toggleBtn.MouseButton1Click:Connect(function()
+            toggled = not toggled
+            toggleBtn:TweenPosition(UDim2.new(0, toggled and 16 or 1, 0, 1), "Out", "Sine", 0.2, true)
+            toggleBtn.BackgroundColor3 = toggled and Color3.fromRGB(0, 200, 0) or Color3.fromRGB(200, 0, 0)
+        end)
+    end
+
+    -- Create toggles at specified positions
+    createToggle(55, "freeze trade")
+    createToggle(95, "force accept")
+    createToggle(135, "add all items")
 end
 
--- Create toggles (adjusted positions to be more compact)
-createToggle(55, "freeze trade")
-createToggle(95, "force accept")
-createToggle(135, "add all items")
+-- Run the GUI creation function
+createGUI()
