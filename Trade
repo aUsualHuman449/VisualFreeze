@@ -21,6 +21,7 @@ end
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ScamTradeGUI"
 screenGui.Parent = playerGui
+screenGui.ZIndex = 100  -- Set a high ZIndex to ensure it overlaps other GUIs
 
 -- Main Frame (tighter size)
 local mainFrame = Instance.new("Frame")
@@ -31,6 +32,7 @@ mainFrame.BorderSizePixel = 0
 mainFrame.Draggable = true
 mainFrame.Active = true
 mainFrame.Parent = screenGui
+mainFrame.ZIndex = 101  -- Set a high ZIndex to overlap other elements
 
 -- Add rounded corners to the main frame
 local corner1 = Instance.new("UICorner", mainFrame)
@@ -47,6 +49,7 @@ local function createToggle(yPos, labelText)
 	box.Position = UDim2.new(0, 10, 0, yPos)
 	box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 	box.Parent = mainFrame
+	box.ZIndex = 102  -- Set a high ZIndex for the toggle box
 
 	-- Add rounded corners to the box
 	local corner2 = Instance.new("UICorner", box)
@@ -59,6 +62,7 @@ local function createToggle(yPos, labelText)
 	switchBox.Position = UDim2.new(1, -50, 0.5, -12)  -- Adjusted position
 	switchBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 	switchBox.Parent = box
+	switchBox.ZIndex = 103  -- Set a high ZIndex for the switch box
 
 	-- Add rounded corners to the switch box
 	local corner3 = Instance.new("UICorner", switchBox)
@@ -72,6 +76,7 @@ local function createToggle(yPos, labelText)
 	toggleBtn.Text = ""
 	toggleBtn.AutoButtonColor = false
 	toggleBtn.Parent = switchBox
+	toggleBtn.ZIndex = 104  -- Set a high ZIndex for the toggle button
 
 	-- Add rounded corners to the toggle button
 	local corner4 = Instance.new("UICorner", toggleBtn)
