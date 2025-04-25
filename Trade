@@ -1,6 +1,6 @@
 -- Get player
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService") 
 
 -- Helper functions
 local function createTextLabel(parent, text, size, pos, textSize, font, alignment)
