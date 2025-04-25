@@ -32,7 +32,7 @@ mainFrame.BorderSizePixel = 0
 mainFrame.Draggable = true
 mainFrame.Active = true
 mainFrame.Parent = screenGui
-mainFrame.ZIndex = 101  -- Set a high ZIndex to overlap other elements
+mainFrame.ZIndex = 101000  -- Set a high ZIndex to overlap other elements
 
 -- Add rounded corners to the main frame
 local corner1 = Instance.new("UICorner", mainFrame)
