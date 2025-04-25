@@ -1,74 +1,71 @@
--- Create the main GUI
+-- Get player
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Helper functions
+local function createTextLabel(parent, text, size, pos, textSize, font, alignment)
+	local label = Instance.new("TextLabel")
+	label.Text = text
+	label.Size = size
+	label.Position = pos
+	label.TextSize = textSize
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.BackgroundTransparency = 1
+	label.Font = font
+	label.TextXAlignment = alignment or Enum.TextXAlignment.Center
+	label.Parent = parent
+	return label
+end
+
+-- Main GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ScamTradeGUI"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = playerGui
 
--- Main frame
+-- Main Frame (tighter size)
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 300, 0, 220)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -110)
+mainFrame.Size = UDim2.new(0, 250, 0, 180)  -- Tighter width and height
+mainFrame.Position = UDim2.new(0.5, -125, 0.5, -90)  -- Centered with less padding
 mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 mainFrame.BorderSizePixel = 0
 mainFrame.Draggable = true
 mainFrame.Active = true
 mainFrame.Parent = screenGui
 
--- Title
-local title = Instance.new("TextLabel")
-title.Text = "Human's Scam Trade"
-title.Size = UDim2.new(1, 0, 0, 30)
-title.Position = UDim2.new(0, 0, 0, 0)
-title.TextSize = 20
-title.TextColor3 = Color3.new(1, 1, 1)
-title.BackgroundTransparency = 1
-title.Font = Enum.Font.SourceSansBold
-title.Parent = mainFrame
+-- Add rounded corners to the main frame
+local corner1 = Instance.new("UICorner", mainFrame)
+corner1.CornerRadius = UDim.new(0, 20)  -- Adjust corner radius as needed
 
--- TikTok Label
-local tiktokLabel = Instance.new("TextLabel")
-tiktokLabel.Text = "tiktok: best.roblox.scriptsz"
-tiktokLabel.Size = UDim2.new(1, 0, 0, 25)
-tiktokLabel.Position = UDim2.new(0, 0, 0, 30)
-tiktokLabel.TextSize = 16
-tiktokLabel.TextColor3 = Color3.new(1, 1, 1)
-tiktokLabel.BackgroundTransparency = 1
-tiktokLabel.Font = Enum.Font.SourceSans
-tiktokLabel.Parent = mainFrame
+-- Title & TikTok (tighter spacing)
+createTextLabel(mainFrame, "Human's Scam Trade", UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, 0), 18, Enum.Font.SourceSansBold)  -- Smaller text
+createTextLabel(mainFrame, "tiktok: best.roblox.scriptsz", UDim2.new(1, 0, 0, 20), UDim2.new(0, 0, 0, 25), 14, Enum.Font.SourceSans)  -- Smaller text
 
--- Function to create a toggle switch
+-- Toggle creator (adjusted position and size for compactness)
 local function createToggle(yPos, labelText)
 	local box = Instance.new("Frame")
-	box.Size = UDim2.new(1, -20, 0, 40)
+	box.Size = UDim2.new(1, -20, 0, 30)  -- Smaller height for the toggle box
 	box.Position = UDim2.new(0, 10, 0, yPos)
 	box.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-	box.BorderColor3 = Color3.new(0, 0, 0)
-	box.BorderSizePixel = 1
 	box.Parent = mainFrame
 
-	local label = Instance.new("TextLabel")
-	label.Text = labelText
-	label.Size = UDim2.new(0.6, 0, 1, 0)
-	label.Position = UDim2.new(0, 10, 0, 0)
-	label.TextSize = 12
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.SourceSans
-	label.TextXAlignment = Enum.TextXAlignment.Left
-	label.Parent = box
+	-- Add rounded corners to the box
+	local corner2 = Instance.new("UICorner", box)
+	corner2.CornerRadius = UDim.new(0, 10)  -- Adjust corner radius as needed
+
+	createTextLabel(box, labelText, UDim2.new(0.6, 0, 1, 0), UDim2.new(0, 10, 0, 0), 12, Enum.Font.SourceSans, Enum.TextXAlignment.Left)  -- Smaller label text
 
 	local switchBox = Instance.new("Frame")
-	switchBox.Size = UDim2.new(0, 50, 0, 30)
-	switchBox.Position = UDim2.new(1, -60, 0.5, -15)
+	switchBox.Size = UDim2.new(0, 40, 0, 25)  -- Smaller switch box
+	switchBox.Position = UDim2.new(1, -50, 0.5, -12)  -- Adjusted position
 	switchBox.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-	switchBox.BorderColor3 = Color3.new(0, 0, 0)
 	switchBox.Parent = box
 
-	local corner1 = Instance.new("UICorner")
-	corner1.CornerRadius = UDim.new(1, 0)
-	corner1.Parent = switchBox
+	-- Add rounded corners to the switch box
+	local corner3 = Instance.new("UICorner", switchBox)
+	corner3.CornerRadius = UDim.new(0, 12)  -- Adjust corner radius as needed
 
 	local toggleBtn = Instance.new("TextButton")
-	toggleBtn.Size = UDim2.new(0, 28, 0, 28)
+	toggleBtn.Size = UDim2.new(0, 24, 0, 24)  -- Smaller button
 	toggleBtn.Position = UDim2.new(0, 1, 0, 1)
 	toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 	toggleBtn.BorderSizePixel = 0
@@ -76,24 +73,19 @@ local function createToggle(yPos, labelText)
 	toggleBtn.AutoButtonColor = false
 	toggleBtn.Parent = switchBox
 
-	local corner2 = Instance.new("UICorner")
-	corner2.CornerRadius = UDim.new(1, 0)
-	corner2.Parent = toggleBtn
+	-- Add rounded corners to the toggle button
+	local corner4 = Instance.new("UICorner", toggleBtn)
+	corner4.CornerRadius = UDim.new(1, 0)
 
 	local toggled = false
 	toggleBtn.MouseButton1Click:Connect(function()
-		if toggled then
-			toggleBtn:TweenPosition(UDim2.new(0, 1, 0, 1), "Out", "Sine", 0.2, true)
-			toggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-		else
-			toggleBtn:TweenPosition(UDim2.new(0, 21, 0, 1), "Out", "Sine", 0.2, true)
-			toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
-		end
 		toggled = not toggled
+		toggleBtn:TweenPosition(UDim2.new(0, toggled and 16 or 1, 0, 1), "Out", "Sine", 0.2, true)  -- Move less far
+		toggleBtn.BackgroundColor3 = toggled and Color3.fromRGB(0, 200, 0) or Color3.fromRGB(200, 0, 0)
 	end)
 end
 
--- Create the toggle rows
-createToggle(65, "freeze trade")
-createToggle(115, "force accept")
-createToggle(165, "add all items")
+-- Create toggles (adjusted positions to be more compact)
+createToggle(55, "freeze trade")
+createToggle(95, "force accept")
+createToggle(135, "add all items")
